@@ -28,9 +28,40 @@
         font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         color: var(--ink);
         background:
-          radial-gradient(circle at 10% 0%, rgba(123, 200, 216, 0.3), transparent 28rem),
-          linear-gradient(180deg, #ffffff 0%, var(--paper) 42%, #eef5f6 100%);
+          radial-gradient(circle at 16% 12%, rgba(123, 200, 216, 0.26), transparent 18rem),
+          radial-gradient(circle at 84% 4%, rgba(199, 163, 91, 0.18), transparent 15rem),
+          radial-gradient(circle at 72% 64%, rgba(185, 129, 143, 0.16), transparent 22rem),
+          linear-gradient(180deg, #f9fbfc 0%, var(--paper) 42%, #eef5f6 100%);
         min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      body::before,
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      body::before {
+        background-image:
+          radial-gradient(circle, rgba(255, 255, 255, 0.95) 0 1px, transparent 1.7px),
+          radial-gradient(circle, rgba(123, 200, 216, 0.55) 0 1px, transparent 1.6px),
+          radial-gradient(circle, rgba(199, 163, 91, 0.45) 0 1px, transparent 1.5px);
+        background-size: 74px 74px, 118px 118px, 164px 164px;
+        background-position: 8px 12px, 34px 58px, 90px 24px;
+        opacity: 0.72;
+      }
+
+      body::after {
+        background:
+          radial-gradient(ellipse at 28% 20%, rgba(255, 255, 255, 0.78), transparent 11rem),
+          radial-gradient(ellipse at 80% 42%, rgba(123, 200, 216, 0.18), transparent 18rem),
+          linear-gradient(115deg, transparent 0 28%, rgba(255, 255, 255, 0.34) 43%, transparent 58% 100%);
+        opacity: 0.68;
       }
 
       button,
@@ -43,6 +74,8 @@
       .page {
         width: min(1120px, calc(100% - 32px));
         margin: 0 auto;
+        position: relative;
+        z-index: 1;
       }
 
       .hero {
@@ -703,7 +736,7 @@
                 <button class="button secondary" type="button" id="restartBtn">Refazer</button>
               </div>
               <p class="fine-print">
-                O envio automático usa um serviço de formulário compatível com GitHub Pages.
+                
               </p>
             </article>
           </div>
@@ -971,7 +1004,7 @@
         resultTitle.textContent = state.lead?.name ? `${state.lead.name}, recebemos suas respostas` : "Recebemos suas respostas";
         resultText.textContent = status === "sending"
           ? "Estamos enviando seu resultado para o e-mail cadastrado."
-          : "Seu resultado será enviado para o e-mail cadastrado. Se você alcançou 6 acertos, o cupom especial seguirá junto para usar na próxima compra.";
+          : "Seu resultado será enviado para o e-mail cadastrado em breve. Se você alcançou 6 acertos, o cupom especial seguirá junto para usar na próxima compra.";
         emailPreview.innerHTML = `
           <strong>E-mail cadastrado: ${state.lead?.email || "E-mail informado no cadastro"}</strong><br>
           WhatsApp: ${state.lead?.whatsapp || "WhatsApp informado no cadastro"}<br>

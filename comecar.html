@@ -43,7 +43,7 @@
         position: fixed;
         inset: 0;
         pointer-events: none;
-        z-index: -1;
+        z-index: 0;
       }
 
       body::before {
@@ -1120,10 +1120,17 @@
       });
 
       const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.get("enviado") === "1") {
-        state.lead = JSON.parse(sessionStorage.getItem("universoPrataLastLead") || "{}");
+      const lastLead = JSON.parse(sessionStorage.getItem("universoPrataLastLead") || "{}");
+      if (urlParams.get("enviado") === "1" && lastLead.email) {
+        state.lead = lastLead;
         showResult("received");
       } else {
+        if (urlParams.get("enviado") === "1") {
+          window.history.replaceState({}, document.title, window.location.href.split("?")[0]);
+        }
+        quizCard.style.display = "block";
+        leadCard.classList.remove("active");
+        resultCard.classList.remove("active");
         renderQuestion();
       }
     </script>

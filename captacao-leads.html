@@ -1,0 +1,1099 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quiz Universo Prata | Larimar e Fadas</title>
+    <style>
+      :root {
+        --ink: #1f2933;
+        --muted: #667085;
+        --paper: #fbfaf8;
+        --silver: #f1f4f6;
+        --line: #d8dee4;
+        --blue: #7bc8d8;
+        --blue-dark: #2f8295;
+        --rose: #b9818f;
+        --gold: #c7a35b;
+        --white: #ffffff;
+        --shadow: 0 18px 48px rgba(31, 41, 51, 0.14);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 10% 0%, rgba(123, 200, 216, 0.3), transparent 28rem),
+          linear-gradient(180deg, #ffffff 0%, var(--paper) 42%, #eef5f6 100%);
+        min-height: 100vh;
+      }
+
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+
+      .page {
+        width: min(1120px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 36px;
+        align-items: center;
+        min-height: 92vh;
+        padding: 28px 0 48px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 30px;
+      }
+
+      .brand img {
+        width: clamp(132px, 18vw, 210px);
+        height: clamp(132px, 18vw, 210px);
+        object-fit: contain;
+      }
+
+      h1 {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(2.7rem, 8vw, 5.75rem);
+        line-height: 0.95;
+        letter-spacing: 0;
+        color: #18232e;
+      }
+
+      .hero-copy {
+        margin: 22px auto 30px;
+        max-width: 620px;
+        color: #4d5a66;
+        font-size: clamp(1.05rem, 2vw, 1.25rem);
+        line-height: 1.65;
+        text-align: center;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .button {
+        border: 0;
+        border-radius: 999px;
+        padding: 14px 22px;
+        cursor: pointer;
+        font-weight: 800;
+        transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+      }
+
+      .button:hover {
+        transform: translateY(-1px);
+      }
+
+      .button.primary {
+        background: #18232e;
+        color: var(--white);
+        box-shadow: 0 12px 26px rgba(24, 35, 46, 0.22);
+      }
+
+      .button.secondary {
+        background: var(--white);
+        color: #18232e;
+        border: 1px solid var(--line);
+      }
+
+      .discount {
+        color: var(--blue-dark);
+        font-weight: 800;
+      }
+
+      .visual {
+        position: relative;
+        min-height: 580px;
+      }
+
+      .photo-stack {
+        position: absolute;
+        inset: 0;
+      }
+
+      .photo {
+        position: absolute;
+        overflow: hidden;
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+        background: var(--silver);
+      }
+
+      .photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .photo.larimar {
+        width: 70%;
+        height: 64%;
+        right: 0;
+        top: 6%;
+      }
+
+      .photo.fada {
+        width: 58%;
+        height: 48%;
+        left: 0;
+        bottom: 5%;
+        border: 8px solid var(--white);
+      }
+
+      .shine {
+        position: absolute;
+        right: 12%;
+        bottom: 9%;
+        width: 130px;
+        height: 130px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.78);
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        display: grid;
+        place-items: center;
+        box-shadow: 0 14px 34px rgba(47, 130, 149, 0.18);
+        font-weight: 900;
+        color: var(--blue-dark);
+        text-align: center;
+        line-height: 1.15;
+      }
+
+      .quiz-section {
+        padding: 42px 0 72px;
+      }
+
+      .quiz-shell {
+        display: grid;
+        grid-template-columns: 310px 1fr;
+        gap: 28px;
+        align-items: start;
+      }
+
+      .side-panel,
+      .quiz-card,
+      .lead-card,
+      .result-card {
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(216, 222, 228, 0.9);
+        border-radius: 8px;
+        box-shadow: 0 14px 40px rgba(31, 41, 51, 0.1);
+      }
+
+      .side-panel {
+        position: sticky;
+        top: 18px;
+        padding: 22px;
+      }
+
+      .eyebrow {
+        margin: 0 0 10px;
+        color: var(--blue-dark);
+        text-transform: uppercase;
+        font-size: 0.78rem;
+        letter-spacing: 0.1em;
+        font-weight: 900;
+      }
+
+      .side-panel h2,
+      .lead-card h2,
+      .result-card h2 {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 2rem;
+        letter-spacing: 0;
+      }
+
+      .side-panel p,
+      .lead-card p,
+      .result-card p {
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .meter {
+        height: 10px;
+        background: #e7edf0;
+        border-radius: 999px;
+        overflow: hidden;
+        margin: 18px 0 12px;
+      }
+
+      .meter span {
+        display: block;
+        width: 12.5%;
+        height: 100%;
+        background: linear-gradient(90deg, var(--blue), var(--gold));
+        transition: width 0.25s ease;
+      }
+
+      .stat-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .stat {
+        background: #f7fafb;
+        border: 1px solid #e4eaee;
+        border-radius: 8px;
+        padding: 12px;
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 1.45rem;
+      }
+
+      .stat span {
+        color: var(--muted);
+        font-size: 0.84rem;
+      }
+
+      .quiz-card {
+        padding: clamp(20px, 4vw, 34px);
+      }
+
+      .question-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        align-items: center;
+        margin-bottom: 18px;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: 7px 12px;
+        background: #eef8fa;
+        color: var(--blue-dark);
+        font-weight: 900;
+        font-size: 0.82rem;
+      }
+
+      .level {
+        color: var(--muted);
+        font-size: 0.9rem;
+        font-weight: 700;
+      }
+
+      .question-title {
+        margin: 0 0 20px;
+        font-size: clamp(1.45rem, 3vw, 2.35rem);
+        line-height: 1.18;
+        letter-spacing: 0;
+      }
+
+      .options {
+        display: grid;
+        gap: 12px;
+      }
+
+      .option {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        text-align: left;
+        border: 1px solid #dce5e8;
+        background: #ffffff;
+        color: var(--ink);
+        border-radius: 8px;
+        padding: 15px;
+        cursor: pointer;
+        min-height: 58px;
+      }
+
+      .option.selected {
+        border-color: var(--blue-dark);
+        background: #edf9fb;
+        box-shadow: inset 0 0 0 1px var(--blue-dark);
+      }
+
+      .option small {
+        color: var(--muted);
+      }
+
+      .choice-dot {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 2px solid #b9c6cc;
+        flex: 0 0 20px;
+      }
+
+      .option.selected .choice-dot {
+        border: 6px solid var(--blue-dark);
+      }
+
+      .slider-wrap {
+        padding: 20px;
+        background: #f7fbfc;
+        border: 1px solid #dce5e8;
+        border-radius: 8px;
+      }
+
+      input[type="range"] {
+        width: 100%;
+        accent-color: var(--blue-dark);
+      }
+
+      .slider-labels {
+        display: flex;
+        justify-content: space-between;
+        color: var(--muted);
+        font-size: 0.84rem;
+        margin-top: 8px;
+      }
+
+      .match-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .match-item {
+        border: 1px solid #dce5e8;
+        border-radius: 8px;
+        padding: 14px;
+        background: #ffffff;
+      }
+
+      .match-item label {
+        display: block;
+        font-weight: 900;
+        margin-bottom: 8px;
+      }
+
+      .match-item select,
+      .field input,
+      .field select,
+      .field textarea {
+        width: 100%;
+        border: 1px solid #ccd6dc;
+        border-radius: 8px;
+        padding: 12px;
+        color: var(--ink);
+        background: #ffffff;
+      }
+
+      .quiz-actions {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 24px;
+      }
+
+      .lead-card,
+      .result-card {
+        display: none;
+        padding: clamp(20px, 4vw, 34px);
+      }
+
+      .lead-card.active,
+      .result-card.active {
+        display: block;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 22px;
+      }
+
+      .field.full {
+        grid-column: 1 / -1;
+      }
+
+      .field label {
+        display: block;
+        font-weight: 900;
+        margin-bottom: 7px;
+        font-size: 0.9rem;
+      }
+
+      .field small {
+        display: block;
+        margin-top: 6px;
+        color: var(--muted);
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .result-score {
+        display: grid;
+        grid-template-columns: 140px 1fr;
+        gap: 20px;
+        align-items: center;
+        margin: 20px 0;
+      }
+
+      .score-circle {
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        background: conic-gradient(var(--blue-dark) var(--score-deg), #e8eef1 0);
+      }
+
+      .score-circle span {
+        display: grid;
+        place-items: center;
+        width: 108px;
+        height: 108px;
+        border-radius: 50%;
+        background: var(--white);
+        font-size: 2rem;
+        font-weight: 950;
+      }
+
+      .coupon {
+        display: inline-flex;
+        margin-top: 8px;
+        border: 1px dashed var(--gold);
+        background: #fff8e7;
+        color: #7a5a15;
+        border-radius: 8px;
+        padding: 12px 16px;
+        font-weight: 950;
+        letter-spacing: 0.08em;
+      }
+
+      .email-box {
+        margin-top: 18px;
+        padding: 16px;
+        border-radius: 8px;
+        background: #f5fafb;
+        border: 1px solid #dcebed;
+        color: #40515c;
+        line-height: 1.5;
+      }
+
+      .fine-print {
+        color: var(--muted);
+        font-size: 0.82rem;
+        line-height: 1.5;
+      }
+
+      @media (max-width: 860px) {
+        .page {
+          width: min(100% - 22px, 680px);
+        }
+
+        .hero,
+        .quiz-shell {
+          grid-template-columns: 1fr;
+        }
+
+        .hero {
+          min-height: auto;
+          padding-top: 18px;
+        }
+
+        .brand {
+          margin-bottom: 24px;
+        }
+
+        .visual {
+          min-height: 390px;
+          order: -1;
+        }
+
+        .photo.larimar {
+          width: 74%;
+          height: 64%;
+        }
+
+        .photo.fada {
+          width: 60%;
+          height: 48%;
+        }
+
+        .shine {
+          width: 106px;
+          height: 106px;
+          font-size: 0.88rem;
+        }
+
+        .side-panel {
+          position: static;
+        }
+
+        .match-grid,
+        .form-grid,
+        .result-score {
+          grid-template-columns: 1fr;
+        }
+
+        .quiz-actions {
+          position: sticky;
+          bottom: 0;
+          margin: 24px -20px -20px;
+          padding: 14px 20px;
+          background: rgba(255, 255, 255, 0.95);
+          border-top: 1px solid var(--line);
+        }
+
+        .button {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="hero">
+        <div>
+          <div class="brand">
+            <img src="universo_prata/IMG_9233.PNG" alt="Universo Prata">
+          </div>
+          <p class="hero-copy">
+            Entre no universo dos novos lançamentos e descubra detalhes que unem o azul sereno da Larimar
+            ao encanto das fadas em prata 925. Com <span class="discount">6 acertos</span>, seu cupom de 5%
+            será enviado por e-mail para a próxima compra.
+          </p>
+          <div class="hero-actions">
+            <button class="button primary" type="button" data-scroll="#quiz">Começar quiz</button>
+          </div>
+        </div>
+
+        <div class="visual" aria-hidden="true">
+          <div class="photo-stack">
+            <figure class="photo larimar">
+              <img src="larimar/essa.jpg" alt="">
+            </figure>
+            <figure class="photo fada">
+              <img src="fadas/image.png" alt="">
+            </figure>
+            <div class="shine">5% off<br>com 6 acertos</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="quiz-section" id="quiz">
+        <div class="quiz-shell">
+          <aside class="side-panel">
+            <p class="eyebrow">Quiz interativo</p>
+            <h2>Um convite ao encanto</h2>
+            <p>
+              Um caminho leve entre mar, céu e prata. Responda com calma: quem alcançar 6 acertos recebe
+              um cupom especial no e-mail cadastrado.
+            </p>
+            <div class="meter" aria-label="Progresso do quiz">
+              <span id="progressBar"></span>
+            </div>
+            <div class="fine-print" id="progressText">Pergunta 1 de 8</div>
+          </aside>
+
+          <div>
+            <article class="quiz-card" id="quizCard">
+              <div class="question-top">
+                <span class="tag" id="questionTopic">Larimar</span>
+                <span class="level" id="questionLevel">Iniciante</span>
+              </div>
+              <h2 class="question-title" id="questionTitle"></h2>
+              <div id="questionBody"></div>
+              <div class="quiz-actions">
+                <button class="button secondary" type="button" id="backBtn">Voltar</button>
+                <button class="button primary" type="button" id="nextBtn">Responder</button>
+              </div>
+            </article>
+
+            <article class="lead-card" id="leadCard">
+              <p class="eyebrow">Quase lá</p>
+              <h2>Preencha seus dados para ver o resultado</h2>
+              <p>Seu resultado e o cupom, quando conquistado, serão enviados automaticamente para o e-mail informado.</p>
+              <form id="leadForm" method="POST">
+                <input type="text" name="_honey" class="hidden" tabindex="-1" autocomplete="off">
+                <input type="hidden" name="_subject" value="Novo lead do quiz Universo Prata">
+                <input type="hidden" name="_template" value="table">
+                <input type="hidden" name="_autoresponse" id="autoresponseField">
+                <input type="hidden" name="_next" id="nextField">
+                <input type="hidden" name="resultado_quiz" id="resultField">
+                <input type="hidden" name="cupom" id="couponField">
+                <input type="hidden" name="respostas_quiz" id="answersField">
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="name">Nome</label>
+                    <input id="name" name="name" autocomplete="name" required>
+                  </div>
+                  <div class="field">
+                    <label for="age">Idade</label>
+                    <input id="age" name="age" type="number" min="12" max="100" required>
+                  </div>
+                  <div class="field">
+                    <label for="gender">Gênero</label>
+                    <select id="gender" name="gender" required>
+                      <option value="">Selecione</option>
+                      <option>Feminino</option>
+                      <option>Masculino</option>
+                      <option>Não binário</option>
+                      <option>Prefiro não informar</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="email">E-mail</label>
+                    <input id="email" name="email" type="email" autocomplete="email" required>
+                  </div>
+                  <div class="field">
+                    <label for="whatsapp">WhatsApp</label>
+                    <input id="whatsapp" name="whatsapp" inputmode="tel" autocomplete="tel" placeholder="(00) 00000-0000" required>
+                  </div>
+                  <div class="field">
+                    <label for="jewel">Joia ou pedra preferida</label>
+                    <select id="jewel" name="jewel" required>
+                      <option value="">Selecione</option>
+                      <option>Pietersite</option>
+                      <option>Rodocrosita</option>
+                      <option>Kunzita</option>
+                      <option>Larimar</option>
+                      <option>Ametista</option>
+                      <option>Quartzo rosa</option>
+                      <option>Água-marinha</option>
+                      <option>Outro</option>
+                    </select>
+                  </div>
+                  <div class="field full hidden" id="otherJewelField">
+                    <label for="otherJewel">Conte pra gente qual é</label>
+                    <textarea id="otherJewel" name="otherJewel" rows="3"></textarea>
+                  </div>
+                </div>
+                <div class="quiz-actions">
+                  <button class="button secondary" type="button" id="editQuizBtn">Revisar quiz</button>
+                  <button class="button primary" type="submit">Ver meu resultado</button>
+                </div>
+              </form>
+            </article>
+
+            <article class="result-card" id="resultCard">
+              <p class="eyebrow">Participação recebida</p>
+              <h2 id="resultTitle"></h2>
+              <p id="resultText"></p>
+              <div class="email-box" id="emailPreview"></div>
+              <div class="quiz-actions">
+                <button class="button secondary" type="button" id="restartBtn">Refazer</button>
+              </div>
+              <p class="fine-print">
+                O envio automático usa um serviço de formulário compatível com GitHub Pages.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const questions = [
+        {
+          topic: "Larimar",
+          level: "Iniciante",
+          title: "A Larimar é conhecida por lembrar qual elemento da natureza?",
+          type: "choice",
+          options: ["O oceano e suas ondas", "A lava escura", "A terra seca", "O fogo intenso"],
+          answer: 0
+        },
+        {
+          topic: "Larimar",
+          level: "Iniciante",
+          title: "Em qual lugar do mundo a Larimar nasce naturalmente?",
+          type: "choice",
+          options: ["República Dominicana", "Itália", "México", "Brasil"],
+          answer: 0
+        },
+        {
+          topic: "Fadas",
+          level: "Iniciante",
+          title: "Na coleção de fadas, qual sensação combina mais com a proposta das peças?",
+          type: "choice",
+          options: ["Leveza, amor e magia", "Peso, excesso e rigidez", "Competição e pressa", "Frieza e distância"],
+          answer: 0
+        },
+        {
+          topic: "Prata 925",
+          level: "Iniciante",
+          title: "Quando falamos em prata 925, estamos falando de uma joia associada a qual metal?",
+          type: "choice",
+          options: ["Prata", "Ferro", "Cobre puro", "Alumínio"],
+          answer: 0
+        },
+        {
+          topic: "Larimar",
+          level: "Interativo",
+          title: "Ajuste o medidor para a energia que mais combina com a Larimar.",
+          type: "slider",
+          minLabel: "Intensa e barulhenta",
+          maxLabel: "Calma e oceânica",
+          answerRange: [70, 100]
+        },
+        {
+          topic: "Fadas",
+          level: "Intermediário",
+          title: "Qual combinação resume melhor o significado da joia de fada em prata 925?",
+          type: "choice",
+          options: [
+            "Amuleto delicado de paz, encanto e luz interior",
+            "Joia feita apenas para ocasiões formais",
+            "Peça sem simbolismo, focada só no brilho",
+            "Acessório pesado para chamar atenção pelo excesso"
+          ],
+          answer: 0
+        },
+        {
+          topic: "Larimar + Fadas",
+          level: "Intermediário",
+          title: "Combine cada lançamento com sua ideia principal.",
+          type: "match",
+          pairs: [
+            { label: "Larimar", answer: "Mar, raridade e suavidade" },
+            { label: "Fadas em prata 925", answer: "Leveza, proteção e encanto" }
+          ],
+          options: ["Leveza, proteção e encanto", "Mar, raridade e suavidade", "Excesso, peso e contraste"]
+        },
+        {
+          topic: "Universo Prata",
+          level: "Intermediário",
+          title: "Qual frase traduz melhor a estética desses lançamentos?",
+          type: "choice",
+          options: [
+            "Beleza delicada, significado e conexão com a natureza",
+            "Peças sem história e sem intenção",
+            "Visual esportivo, técnico e industrial",
+            "Brilho máximo acima de qualquer delicadeza"
+          ],
+          answer: 0
+        }
+      ];
+
+      // Troque pelo e-mail oficial que recebera os leads e fara a ativacao do FormSubmit.
+      const FORM_ENDPOINT = "https://formsubmit.co/shtorachess9@gmail.com";
+
+      const state = {
+        current: 0,
+        answers: Array(questions.length).fill(null),
+        score: 0,
+        lead: null,
+        coupon: ""
+      };
+
+      const quizCard = document.querySelector("#quizCard");
+      const leadCard = document.querySelector("#leadCard");
+      const resultCard = document.querySelector("#resultCard");
+      const questionTopic = document.querySelector("#questionTopic");
+      const questionLevel = document.querySelector("#questionLevel");
+      const questionTitle = document.querySelector("#questionTitle");
+      const questionBody = document.querySelector("#questionBody");
+      const progressBar = document.querySelector("#progressBar");
+      const progressText = document.querySelector("#progressText");
+      const backBtn = document.querySelector("#backBtn");
+      const nextBtn = document.querySelector("#nextBtn");
+      const leadForm = document.querySelector("#leadForm");
+      const jewel = document.querySelector("#jewel");
+      const otherJewelField = document.querySelector("#otherJewelField");
+      const otherJewel = document.querySelector("#otherJewel");
+      const autoresponseField = document.querySelector("#autoresponseField");
+      const nextField = document.querySelector("#nextField");
+      const resultField = document.querySelector("#resultField");
+      const couponField = document.querySelector("#couponField");
+      const answersField = document.querySelector("#answersField");
+
+      function renderQuestion() {
+        const question = questions[state.current];
+        questionTopic.textContent = question.topic;
+        questionLevel.textContent = question.level;
+        questionTitle.textContent = question.title;
+        progressBar.style.width = `${((state.current + 1) / questions.length) * 100}%`;
+        progressText.textContent = `Pergunta ${state.current + 1} de ${questions.length}`;
+        backBtn.disabled = state.current === 0;
+        nextBtn.textContent = state.current === questions.length - 1 ? "Finalizar quiz" : "Responder";
+
+        if (question.type === "choice") {
+          questionBody.innerHTML = `<div class="options">${question.options.map((option, index) => `
+            <button class="option ${state.answers[state.current] === index ? "selected" : ""}" type="button" data-answer="${index}">
+              <span class="choice-dot"></span>
+              <span>${option}</span>
+            </button>
+          `).join("")}</div>`;
+          questionBody.querySelectorAll("[data-answer]").forEach((button) => {
+            button.addEventListener("click", () => {
+              state.answers[state.current] = Number(button.dataset.answer);
+              renderQuestion();
+            });
+          });
+        }
+
+        if (question.type === "slider") {
+          const value = state.answers[state.current] ?? 50;
+          questionBody.innerHTML = `
+            <div class="slider-wrap">
+              <input type="range" min="0" max="100" value="${value}" id="sliderAnswer">
+              <div class="slider-labels">
+                <span>${question.minLabel}</span>
+                <strong id="sliderValue">${value}%</strong>
+                <span>${question.maxLabel}</span>
+              </div>
+            </div>
+          `;
+          const slider = document.querySelector("#sliderAnswer");
+          const sliderValue = document.querySelector("#sliderValue");
+          slider.addEventListener("input", () => {
+            state.answers[state.current] = Number(slider.value);
+            sliderValue.textContent = `${slider.value}%`;
+          });
+          state.answers[state.current] = value;
+        }
+
+        if (question.type === "match") {
+          const answer = state.answers[state.current] || {};
+          questionBody.innerHTML = `<div class="match-grid">${question.pairs.map((pair, index) => `
+            <div class="match-item">
+              <label for="match${index}">${pair.label}</label>
+              <select id="match${index}" data-match="${pair.label}">
+                <option value="">Escolha</option>
+                ${question.options.map((option) => `<option ${answer[pair.label] === option ? "selected" : ""}>${option}</option>`).join("")}
+              </select>
+            </div>
+          `).join("")}</div>`;
+          questionBody.querySelectorAll("[data-match]").forEach((select) => {
+            select.addEventListener("change", () => {
+              state.answers[state.current] = {
+                ...(state.answers[state.current] || {}),
+                [select.dataset.match]: select.value
+              };
+            });
+          });
+        }
+      }
+
+      function answerIsComplete(question, answer) {
+        if (answer === null || answer === undefined || answer === "") return false;
+        if (question.type === "match") {
+          return question.pairs.every((pair) => answer[pair.label]);
+        }
+        return true;
+      }
+
+      function isCorrect(question, answer) {
+        if (question.type === "choice") return answer === question.answer;
+        if (question.type === "slider") return answer >= question.answerRange[0] && answer <= question.answerRange[1];
+        if (question.type === "match") {
+          return question.pairs.every((pair) => answer && answer[pair.label] === pair.answer);
+        }
+        return false;
+      }
+
+      function calculateScore() {
+        return questions.reduce((total, question, index) => total + (isCorrect(question, state.answers[index]) ? 1 : 0), 0);
+      }
+
+      function showLeadForm() {
+        state.score = calculateScore();
+        quizCard.style.display = "none";
+        leadCard.classList.add("active");
+        resultCard.classList.remove("active");
+      }
+
+      function makeCoupon() {
+        const key = "universoPrataCouponCounter";
+        const next = Number(localStorage.getItem(key) || "0") + 1;
+        localStorage.setItem(key, String(next));
+        return `UNIPRATA${String(next).padStart(3, "0")}`;
+      }
+
+      function formEndpointIsConfigured() {
+        return !FORM_ENDPOINT.includes("SEU_EMAIL_DA_LOJA");
+      }
+
+      function buildAnswersSummary() {
+        return questions.map((question, index) => {
+          const answer = state.answers[index];
+          if (question.type === "choice") return `${index + 1}. ${question.title} Resposta: ${question.options[answer] || "Não respondida"}`;
+          if (question.type === "slider") return `${index + 1}. ${question.title} Resposta: ${answer}%`;
+          if (question.type === "match") {
+            const pairs = question.pairs.map((pair) => `${pair.label}: ${(answer && answer[pair.label]) || "Não respondida"}`).join("; ");
+            return `${index + 1}. ${question.title} Resposta: ${pairs}`;
+          }
+          return `${index + 1}. ${question.title}`;
+        }).join("\n");
+      }
+
+      function buildAutoresponse(preferred) {
+        const approved = state.score >= 6;
+        return [
+          `Olá, ${state.lead.name}!`,
+          "",
+          `Recebemos suas respostas no quiz da Universo Prata.`,
+          `Seu resultado foi ${state.score} de ${questions.length} acertos.`,
+          approved
+            ? `Você garantiu 5% de desconto na próxima compra. Seu cupom é: ${state.coupon}`
+            : "Desta vez o cupom não foi liberado, pois eram necessários 6 acertos.",
+          "",
+          `Preferência informada: ${preferred || "Não informada"}.`,
+          "",
+          "Obrigada por entrar nesse universo de Larimar, fadas e prata 925."
+        ].join("\n");
+      }
+
+      function showResult(status = "received") {
+        const preferred = state.lead?.jewel === "Outro" ? state.lead.otherJewel : state.lead?.jewel;
+        const resultTitle = document.querySelector("#resultTitle");
+        const resultText = document.querySelector("#resultText");
+        const emailPreview = document.querySelector("#emailPreview");
+
+        resultTitle.textContent = state.lead?.name ? `${state.lead.name}, recebemos suas respostas` : "Recebemos suas respostas";
+        resultText.textContent = status === "sending"
+          ? "Estamos enviando seu resultado para o e-mail cadastrado."
+          : "Seu resultado será enviado para o e-mail cadastrado. Se você alcançou 6 acertos, o cupom especial seguirá junto para usar na próxima compra.";
+        emailPreview.innerHTML = `
+          <strong>E-mail cadastrado: ${state.lead?.email || "E-mail informado no cadastro"}</strong><br>
+          WhatsApp: ${state.lead?.whatsapp || "WhatsApp informado no cadastro"}<br>
+          Preferência: ${preferred || "Não informada"}<br>
+          Resultado e cupom serão informados somente por e-mail.
+        `;
+        quizCard.style.display = "none";
+        leadCard.classList.remove("active");
+        resultCard.classList.add("active");
+      }
+
+      function showConfigurationWarning() {
+        const resultTitle = document.querySelector("#resultTitle");
+        const resultText = document.querySelector("#resultText");
+        const emailPreview = document.querySelector("#emailPreview");
+        resultTitle.textContent = "Integração quase pronta";
+        resultText.textContent = "Para o envio automático funcionar no GitHub Pages, troque SEU_EMAIL_DA_LOJA@exemplo.com pelo e-mail oficial da Universo Prata na constante FORM_ENDPOINT.";
+        emailPreview.innerHTML = "Após publicar, faça uma primeira submissão de teste e confirme o e-mail de ativação enviado pelo FormSubmit.";
+        quizCard.style.display = "none";
+        leadCard.classList.remove("active");
+        resultCard.classList.add("active");
+      }
+
+      document.querySelectorAll("[data-scroll]").forEach((button) => {
+        button.addEventListener("click", () => {
+          document.querySelector(button.dataset.scroll).scrollIntoView({ behavior: "smooth" });
+        });
+      });
+
+      backBtn.addEventListener("click", () => {
+        if (state.current > 0) {
+          state.current -= 1;
+          renderQuestion();
+        }
+      });
+
+      nextBtn.addEventListener("click", () => {
+        const question = questions[state.current];
+        const answer = state.answers[state.current];
+        if (!answerIsComplete(question, answer)) {
+          nextBtn.textContent = "Escolha uma resposta";
+          setTimeout(() => {
+            nextBtn.textContent = state.current === questions.length - 1 ? "Finalizar quiz" : "Responder";
+          }, 1200);
+          return;
+        }
+        if (state.current < questions.length - 1) {
+          state.current += 1;
+          renderQuestion();
+          return;
+        }
+        showLeadForm();
+      });
+
+      document.querySelector("#editQuizBtn").addEventListener("click", () => {
+        leadCard.classList.remove("active");
+        quizCard.style.display = "block";
+        renderQuestion();
+      });
+
+      jewel.addEventListener("change", () => {
+        const isOther = jewel.value === "Outro";
+        otherJewelField.classList.toggle("hidden", !isOther);
+        otherJewel.required = isOther;
+      });
+
+      leadForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        state.lead = Object.fromEntries(new FormData(leadForm).entries());
+        state.score = calculateScore();
+        state.coupon = state.score >= 6 ? makeCoupon() : "Sem cupom desta vez";
+        const preferred = state.lead.jewel === "Outro" ? state.lead.otherJewel : state.lead.jewel;
+        const savedLeads = JSON.parse(localStorage.getItem("universoPrataLeads") || "[]");
+        savedLeads.push({
+          ...state.lead,
+          score: state.score,
+          coupon: state.coupon,
+          createdAt: new Date().toISOString()
+        });
+        localStorage.setItem("universoPrataLeads", JSON.stringify(savedLeads));
+
+        if (!formEndpointIsConfigured()) {
+          showConfigurationWarning();
+          return;
+        }
+
+        leadForm.action = FORM_ENDPOINT;
+        resultField.value = `${state.score} de ${questions.length} acertos`;
+        couponField.value = state.coupon;
+        answersField.value = buildAnswersSummary();
+        autoresponseField.value = buildAutoresponse(preferred);
+        nextField.value = `${window.location.href.split("?")[0]}?enviado=1`;
+        sessionStorage.setItem("universoPrataLastLead", JSON.stringify({
+          name: state.lead.name,
+          email: state.lead.email,
+          whatsapp: state.lead.whatsapp,
+          jewel: preferred
+        }));
+        showResult("sending");
+        leadForm.submit();
+      });
+
+      document.querySelector("#restartBtn").addEventListener("click", () => {
+        window.history.replaceState({}, document.title, window.location.pathname);
+        state.current = 0;
+        state.answers = Array(questions.length).fill(null);
+        state.score = 0;
+        leadForm.reset();
+        otherJewelField.classList.add("hidden");
+        resultCard.classList.remove("active");
+        quizCard.style.display = "block";
+        renderQuestion();
+        document.querySelector("#quiz").scrollIntoView({ behavior: "smooth" });
+      });
+
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get("enviado") === "1") {
+        state.lead = JSON.parse(sessionStorage.getItem("universoPrataLastLead") || "{}");
+        showResult("received");
+      } else {
+        renderQuestion();
+      }
+    </script>
+  </body>
+</html>
